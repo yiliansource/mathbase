@@ -65,6 +65,7 @@ export function UserWidget() {
                         <Link
                             className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-neutral-100"
                             href={item.href}
+                            prefetch={false}
                         >
                             {item.icon}
                             {item.label}
