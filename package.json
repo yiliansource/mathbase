@@ -1,6 +1,7 @@
 {
     "name": "mathbase",
     "scripts": {
+        "dev": "conc --names frontend,backend \"yarn frontend:dev\" \"yarn backend:dev\"",
         "frontend:dev": "yarn workspace frontend dev",
         "backend:dev": "yarn workspace backend start:dev",
         "format": "prettier --write ."
@@ -11,6 +12,7 @@
     "packageManager": "yarn@4.4.1",
     "devDependencies": {
         "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "concurrently": "^9.1.2",
         "prettier": "^3.5.3"
     }
 }
