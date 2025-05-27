@@ -4,6 +4,9 @@
         "dev": "conc --names frontend,backend \"yarn frontend:dev\" \"yarn backend:dev\"",
         "frontend:dev": "yarn workspace frontend dev",
         "backend:dev": "yarn workspace backend start:dev",
+        "build": "yarn frontend:build && yarn backend:build",
+        "frontend:build": "yarn workspace frontend build",
+        "backend:build": "yarn workspace backend build",
         "format": "prettier --write ."
     },
     "workspaces": [

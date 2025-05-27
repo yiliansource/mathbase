@@ -1,0 +1,36 @@
+name: Deploy to DigitalOcean
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Restart app via SSH
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.DROPLET_HOST }}
+                  username: ${{ secrets.DROPLET_USER }}
+                  key: ${{ secrets.DROPLET_KEY }}
+                  script: |
+                      cd ~/mathbase
+
+                      pm2 stop frontend
+                      pm2 stop backend
+
+                      git pull
+
+                      yarn install
+                      yarn build
+
+                      pm2 start frontend
+                      pm2 start backend
+
+                      pm2 save
