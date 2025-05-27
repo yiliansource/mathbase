@@ -1,20 +1,36 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
+import { APP_GUARD } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import * as Joi from "joi";
+import Joi from "joi";
 
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
+import { AuthModule } from "./auth/auth.module";
+import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { Problem } from "./problems/problem.model";
+import { ProblemsModule } from "./problems/problems.module";
+import { User } from "./users/user.model";
+import { UsersModule } from "./users/users.module";
 
 @Module({
     imports: [
         ConfigModule.forRoot({
+            isGlobal: true,
             validationSchema: Joi.object({
-                DATABASE_NAME: Joi.string(),
-                DATABASE_USER: Joi.string(),
-                DATABASE_PASSWORD: Joi.string(),
+                FRONTEND_URL: Joi.string().default("http://localhost:3000"),
+
+                DATABASE_NAME: Joi.string().default("mathbase"),
+                DATABASE_USER: Joi.string().default("root"),
+                DATABASE_PASSWORD: Joi.string().default("root"),
+
                 PORT: Joi.number().port().default(3001),
+
+                GOOGLE_CLIENT_ID: Joi.string().required(),
+                GOOGLE_CLIENT_SECRET: Joi.string().required(),
+                GOOGLE_CALLBACK_URL: Joi.string().required(),
+
+                JWT_SECRET: Joi.string().default("math"),
             }),
         }),
         TypeOrmModule.forRootAsync({
@@ -27,12 +43,21 @@ import { Problem } from "./problems/problem.model";
                 username: configService.get<string>("DATABASE_USER"),
                 password: configService.get<string>("DATABASE_PASSWORD"),
                 database: configService.get<string>("DATABASE_NAME"),
-                entities: [Problem],
+                entities: [User, Problem],
                 synchronize: true,
             }),
         }),
+        AuthModule,
+        UsersModule,
+        ProblemsModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: JwtAuthGuard,
+        },
+        AppService,
+    ],
 })
 export class AppModule {}
