@@ -1,13 +1,21 @@
 import { UserWidget } from "@/components/user-widget";
+import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Kurale } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 
 import "./globals.css";
 
 const inter = Inter({
     variable: "--font-inter",
+    subsets: ["latin"],
+});
+
+const kurale = Kurale({
+    variable: "--font-kurale",
+    weight: "400",
     subsets: ["latin"],
 });
 
@@ -24,6 +32,10 @@ const navigation: { label: string; href: string }[] = [
         label: "Database",
         href: "/db/",
     },
+    {
+        label: "App",
+        href: "/app",
+    },
 ];
 
 export default async function RootLayout({
@@ -33,12 +45,24 @@ export default async function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body className={clsx(`${inter.variable} ${inter.className} antialiased`)}>
+            <body
+                className={clsx(
+                    [inter, kurale].map((f) => f.variable),
+                    inter.className,
+                    `antialiased`,
+                )}
+            >
                 <div className="flex flex-col min-h-dvh mx-auto max-w-5xl px-3">
-                    <header className="flex flex-row justify-between items-center h-18">
+                    <header className="flex flex-row justify-between items-center h-18 select-none">
                         <div>
-                            <Link href="/" className="text-xl font-semibold">
-                                mathbase
+                            <Link href="/" className="text-2xl font-bold text-blue-500">
+                                <Image
+                                    src="/solvely-icon.png"
+                                    width={40}
+                                    height={40}
+                                    alt="Solvely Logo"
+                                    draggable={false}
+                                />
                             </Link>
                         </div>
                         <nav className="flex flex-row gap-6">
@@ -51,8 +75,13 @@ export default async function RootLayout({
                         <UserWidget />
                     </header>
                     <main className="flex flex-col w-full mx-auto max-w-5xl grow">{children}</main>
-                    <footer className="flex flex-row justify-center items-center h-12 text-sm text-neutral-400">
-                        <p>Copyright &copy; {new Date().getFullYear()} mathbase</p>
+                    <footer className="flex flex-row justify-between items-center h-12 text-sm text-neutral-400 select-none">
+                        <p>Copyright &copy; {new Date().getFullYear()} solvely</p>
+                        <p>
+                            <Link href="https://github.com/yiliansource/mathbase">
+                                <GithubLogoIcon size={24} />
+                            </Link>
+                        </p>
                     </footer>
                 </div>
             </body>
