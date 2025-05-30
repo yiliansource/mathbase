@@ -20,7 +20,7 @@ import { UsersModule } from "./users/users.module";
             validationSchema: Joi.object({
                 FRONTEND_URL: Joi.string().default("http://localhost:3000"),
 
-                DATABASE_NAME: Joi.string().default("mathbase"),
+                DATABASE_NAME: Joi.string().default("solvely"),
                 DATABASE_USER: Joi.string().default("root"),
                 DATABASE_PASSWORD: Joi.string().default("root"),
 

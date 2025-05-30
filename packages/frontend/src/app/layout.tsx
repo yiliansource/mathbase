@@ -20,7 +20,7 @@ const kurale = Kurale({
 });
 
 export const metadata: Metadata = {
-    title: "mathbase",
+    title: "solvely",
 };
 
 const navigation: { label: string; href: string }[] = [
@@ -78,7 +78,7 @@ export default async function RootLayout({
                     <footer className="flex flex-row justify-between items-center h-12 text-sm text-neutral-400 select-none">
                         <p>Copyright &copy; {new Date().getFullYear()} solvely</p>
                         <p>
-                            <Link href="https://github.com/yiliansource/mathbase">
+                            <Link href="https://github.com/yiliansource/solvely">
                                 <GithubLogoIcon size={24} />
                             </Link>
                         </p>
