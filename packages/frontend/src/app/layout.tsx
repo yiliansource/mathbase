@@ -2,7 +2,7 @@ import { UserWidget } from "@/components/user-widget";
 import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import { Inter, Kurale } from "next/font/google";
+import { Inconsolata, Inter, Kurale } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,6 +11,12 @@ import "./globals.css";
 const inter = Inter({
     variable: "--font-inter",
     subsets: ["latin"],
+});
+
+const inconsolata = Inconsolata({
+    variable: "--font-inconsolata",
+    subsets: ["latin"],
+    weight: ["400"],
 });
 
 const kurale = Kurale({
@@ -47,7 +53,7 @@ export default async function RootLayout({
         <html lang="en">
             <body
                 className={clsx(
-                    [inter, kurale].map((f) => f.variable),
+                    [inter, kurale, inconsolata].map((f) => f.variable),
                     inter.className,
                     `antialiased`,
                 )}
@@ -67,7 +73,12 @@ export default async function RootLayout({
                         </div>
                         <nav className="flex flex-row gap-6">
                             {navigation.map((n) => (
-                                <Link key={n.href} href={n.href} className="px-2 py-1 text-sm font-semibold">
+                                <Link
+                                    key={n.href}
+                                    href={n.href}
+                                    className="px-2 py-1 text-sm font-semibold"
+                                    prefetch={false}
+                                >
                                     {n.label}
                                 </Link>
                             ))}
@@ -75,7 +86,7 @@ export default async function RootLayout({
                         <UserWidget />
                     </header>
                     <main className="flex flex-col w-full mx-auto max-w-5xl grow">{children}</main>
-                    <footer className="flex flex-row justify-between items-center h-12 text-sm text-neutral-400 select-none">
+                    <footer className="flex flex-row justify-between items-center h-12 text-md font-mono text-neutral-400 select-none">
                         <p>Copyright &copy; {new Date().getFullYear()} solvely</p>
                         <p>
                             <Link href="https://github.com/yiliansource/solvely">

@@ -10,6 +10,8 @@
 
     --color-background: var(--background);
     --color-foreground: var(--foreground);
+
+    --font-mono: var(--font-inconsolata);
 }
 
 /* 

@@ -22,6 +22,13 @@ jobs:
             - uses: actions/setup-node@v4
               with:
                   node-version: 20
+                  cache: "yarn"
+
+            - uses: actions/cache@v4
+              with:
+                  path: ${{ github.workspace }}/packages/frontend/.next/cache
+                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('packages/frontend/**/*.ts', 'packages/frontend/**/*.tsx') }}
+                  restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
 
             - name: Install dependencies
               run: yarn install --immutable

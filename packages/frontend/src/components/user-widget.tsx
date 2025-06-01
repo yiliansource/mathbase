@@ -3,38 +3,34 @@
 import { getApiUrl } from "@/lib/api";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ArrowRightIcon, SignOutIcon, UserIcon } from "@phosphor-icons/react";
+import clsx from "clsx";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
-
-const dropdownItems: {
-    label: string;
-    icon: React.ReactNode;
-    href: string;
-}[] = [
-    {
-        label: "Profile",
-        icon: <UserIcon />,
-        href: "/profile",
-    },
-    {
-        label: "Logout",
-        icon: <SignOutIcon />,
-        href: getApiUrl("/auth/logout"),
-    },
-];
+import React, { useCallback, useEffect, useState } from "react";
 
 export function UserWidget() {
     const [user, setUser] = useState<{ avatar: string } | null>(null);
 
+    const styles = {
+        menuItem: "group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-neutral-100 cursor-pointer",
+    };
+
     useEffect(() => {
-        async function fetchData() {
+        async function fetchDataAsync() {
             const res = await fetch(getApiUrl("/users/me"), { credentials: "include" });
             if (!res.ok) return;
 
             const json = await res.json();
             setUser(json);
         }
-        fetchData();
+        fetchDataAsync();
+    }, []);
+
+    const logout = useCallback(() => {
+        async function logoutAsync() {
+            await fetch(getApiUrl("/auth/logout"), { redirect: "manual", credentials: "include" });
+            setUser(null);
+        }
+        logoutAsync();
     }, []);
 
     if (!user) {
@@ -60,18 +56,16 @@ export function UserWidget() {
                 anchor="top end"
                 className="w-52 origin-top-right rounded-lg border border-neutral-300 p-1 text-sm/6 transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
             >
-                {dropdownItems.map((item) => (
-                    <MenuItem key={item.label}>
-                        <Link
-                            className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-neutral-100"
-                            href={item.href}
-                            prefetch={false}
-                        >
-                            {item.icon}
-                            {item.label}
-                        </Link>
-                    </MenuItem>
-                ))}
+                <MenuItem>
+                    <Link className={styles.menuItem} href="/profile" prefetch={false}>
+                        <UserIcon /> Profile
+                    </Link>
+                </MenuItem>
+                <MenuItem>
+                    <span className={clsx(styles.menuItem, "text-red-500")} onClick={logout}>
+                        <SignOutIcon /> Logout
+                    </span>
+                </MenuItem>
             </MenuItems>
         </Menu>
     );
