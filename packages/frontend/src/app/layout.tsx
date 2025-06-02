@@ -1,3 +1,4 @@
+import { Navigation } from "@/components/navigation";
 import { UserWidget } from "@/components/user-widget";
 import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
@@ -29,22 +30,7 @@ export const metadata: Metadata = {
     title: "solvely",
 };
 
-const navigation: { label: string; href: string }[] = [
-    {
-        label: "About",
-        href: "/",
-    },
-    {
-        label: "Database",
-        href: "/db/",
-    },
-    {
-        label: "App",
-        href: "/app",
-    },
-];
-
-export default async function RootLayout({
+export default function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
@@ -60,29 +46,16 @@ export default async function RootLayout({
             >
                 <div className="flex flex-col min-h-dvh mx-auto max-w-5xl px-3">
                     <header className="flex flex-row justify-between items-center h-18 select-none">
-                        <div>
-                            <Link href="/" className="text-2xl font-bold text-blue-500">
-                                <Image
-                                    src="/solvely-icon.png"
-                                    width={40}
-                                    height={40}
-                                    alt="Solvely Logo"
-                                    draggable={false}
-                                />
-                            </Link>
-                        </div>
-                        <nav className="flex flex-row gap-6">
-                            {navigation.map((n) => (
-                                <Link
-                                    key={n.href}
-                                    href={n.href}
-                                    className="px-2 py-1 text-sm font-semibold"
-                                    prefetch={false}
-                                >
-                                    {n.label}
-                                </Link>
-                            ))}
-                        </nav>
+                        <Link href="/" className="text-2xl font-bold text-blue-500">
+                            <Image
+                                src="/solvely-icon.png"
+                                width={40}
+                                height={40}
+                                alt="Solvely Logo"
+                                draggable={false}
+                            />
+                        </Link>
+                        <Navigation />
                         <UserWidget />
                     </header>
                     <main className="flex flex-col w-full mx-auto max-w-5xl grow">{children}</main>

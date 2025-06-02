@@ -1,18 +1,13 @@
 "use client";
 
+import { Menu, MenuButton, MenuItem, MenuItems } from "@/components/forms/dropdown-menu";
 import { getApiUrl } from "@/lib/api";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ArrowRightIcon, SignOutIcon, UserIcon } from "@phosphor-icons/react";
-import clsx from "clsx";
 import Link from "next/link";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function UserWidget() {
     const [user, setUser] = useState<{ avatar: string } | null>(null);
-
-    const styles = {
-        menuItem: "group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-neutral-100 cursor-pointer",
-    };
 
     useEffect(() => {
         async function fetchDataAsync() {
@@ -52,19 +47,14 @@ export function UserWidget() {
                     <img src={user.avatar} className="rounded-full w-8 h-8" />
                 </div>
             </MenuButton>
-            <MenuItems
-                anchor="top end"
-                className="w-52 origin-top-right rounded-lg border border-neutral-300 p-1 text-sm/6 transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
-            >
+            <MenuItems anchor="top end">
                 <MenuItem>
-                    <Link className={styles.menuItem} href="/profile" prefetch={false}>
+                    <Link className="flex flex-row items-center gap-2" href="/profile" prefetch={false}>
                         <UserIcon /> Profile
                     </Link>
                 </MenuItem>
-                <MenuItem>
-                    <span className={clsx(styles.menuItem, "text-red-500")} onClick={logout}>
-                        <SignOutIcon /> Logout
-                    </span>
+                <MenuItem className="text-red-500" onClick={logout}>
+                    <SignOutIcon /> Logout
                 </MenuItem>
             </MenuItems>
         </Menu>
