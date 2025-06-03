@@ -1,10 +1,36 @@
-import { MenuItem as HeadlessMenuItem, MenuItems as HeadlessMenuItems } from "@headlessui/react";
+import {
+    MenuItem as HeadlessMenuItem,
+    MenuItemProps as HeadlessMenuItemProps,
+    MenuItems as HeadlessMenuItems,
+    MenuItemsProps as HeadlessMenuItemsProps,
+} from "@headlessui/react";
 import clsx from "clsx";
-import React from "react";
+import { ReactNode } from "react";
 
 export { Menu, MenuButton } from "@headlessui/react";
 
-export function MenuItems({ className, children, ...props }: React.ComponentProps<typeof HeadlessMenuItems>) {
+export function MenuItem({
+    className,
+    children,
+    ...props
+}: {
+    children?: ReactNode;
+} & HeadlessMenuItemProps<"span">) {
+    return (
+        <HeadlessMenuItem {...props}>
+            <span
+                className={clsx(
+                    className,
+                    "group flex flex-row w-full items-center gap-2 rounded-lg px-3 py-1.5 bg-white hover:bg-neutral-100 cursor-pointer",
+                )}
+            >
+                {children}
+            </span>
+        </HeadlessMenuItem>
+    );
+}
+
+export function MenuItems({ className, children, ...props }: HeadlessMenuItemsProps<"span">) {
     return (
         <HeadlessMenuItems
             className={clsx(
@@ -15,24 +41,5 @@ export function MenuItems({ className, children, ...props }: React.ComponentProp
         >
             {children}
         </HeadlessMenuItems>
-    );
-}
-
-export function MenuItem({
-    className,
-    children,
-    ...props
-}: { children: React.ReactNode } & React.ComponentProps<typeof HeadlessMenuItem>) {
-    return (
-        <HeadlessMenuItem {...props}>
-            <span
-                className={clsx(
-                    className,
-                    "group flex flex-row w-full items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-neutral-100 cursor-pointer",
-                )}
-            >
-                {children}
-            </span>
-        </HeadlessMenuItem>
     );
 }

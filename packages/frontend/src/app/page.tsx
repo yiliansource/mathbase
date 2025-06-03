@@ -1,4 +1,4 @@
-import { Button } from "@headlessui/react";
+import { Button } from "@/components/forms/button";
 import { ArrowRightIcon, DatabaseIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 
@@ -14,11 +14,7 @@ export default function Home() {
                 learning journey.
             </p>
             <div className="flex flex-row gap-4">
-                <Button
-                    className="flex flex-row gap-2 cursor-pointer items-center py-3 px-4 hover:bg-neutral-200 font-semibold text-sm rounded-md"
-                    as={Link}
-                    href="/db"
-                >
+                <Button as={Link} href="/db" variant="secondary">
                     <DatabaseIcon size={20} />
                     View Database
                 </Button>

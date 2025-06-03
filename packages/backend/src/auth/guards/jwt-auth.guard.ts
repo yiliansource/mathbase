@@ -4,7 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import { Reflector } from "@nestjs/core";
 import { JsonWebTokenError, JwtService, TokenExpiredError } from "@nestjs/jwt";
 import { Request, Response } from "express";
-import { UsersService } from "src/users/users.service";
+import { UserService } from "src/users/user.service";
 
 export const IS_PUBLIC_KEY = "isPublic";
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
@@ -15,7 +15,7 @@ export class JwtAuthGuard implements CanActivate {
         private jwtService: JwtService,
         private reflector: Reflector,
         private configService: ConfigService,
-        private usersService: UsersService,
+        private usersService: UserService,
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -37,10 +37,12 @@ export class JwtAuthGuard implements CanActivate {
             try {
                 const payload = (await this.jwtService.verifyAsync(token, {
                     secret: this.configService.get("JWT_SECRET"),
-                })) as { sub: number } | undefined;
+                })) as { sub: string } | undefined;
 
                 if (payload) {
-                    request["user"] = await this.usersService.findById(payload.sub);
+                    const id = parseInt(payload.sub);
+                    await this.usersService.registerActivity(id);
+                    request["user"] = await this.usersService.findById(id);
                 }
             } catch (err) {
                 // todo: implement refresh tokens

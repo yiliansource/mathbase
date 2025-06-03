@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy, VerifyCallback } from "passport-google-oauth20";
-import { UsersService } from "src/users/users.service";
+import { UserService } from "src/users/user.service";
 
 import { AuthService } from "../auth.service";
 
@@ -11,7 +11,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
     constructor(
         @Inject() private configService: ConfigService,
         @Inject() private authService: AuthService,
-        @Inject() private usersService: UsersService,
+        @Inject() private userService: UserService,
     ) {
         super({
             clientID: configService.get("GOOGLE_CLIENT_ID")!,
@@ -28,15 +28,17 @@ export class GoogleStrategy extends PassportStrategy(Strategy, "google") {
             photos: { value: string }[];
         };
 
-        const existingUser = await this.usersService.findByGoogleId(id);
-        if (existingUser) return existingUser;
+        const existingUser = await this.userService.findByGoogleId(id);
+        if (existingUser) {
+            done(null, existingUser);
+        } else {
+            const newUser = await this.authService.register({
+                name: `${name.givenName} ${name.familyName}`,
+                avatar: photos[0].value,
+                googleId: id,
+            });
 
-        const newUser = await this.authService.register({
-            name: `${name.givenName} ${name.familyName}`,
-            avatar: photos[0].value,
-            googleId: id,
-        });
-
-        done(null, newUser);
+            done(null, newUser);
+        }
     }
 }
