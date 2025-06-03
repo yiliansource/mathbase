@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Problem {
@@ -10,4 +10,17 @@ export class Problem {
 
     @CreateDateColumn()
     publishedAt: Date;
+
+    @UpdateDateColumn()
+    lastEditedAt: Date;
+
+    @Column({ type: "integer" })
+    authorId: number;
+
+    @Column("simple-array", { nullable: true })
+    tags: string[];
+
+    @Column({ type: "text" })
+    source: string;
 }
+
