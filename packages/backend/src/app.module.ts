@@ -11,7 +11,7 @@ import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { Problem } from "./problems/problem.model";
 import { ProblemsModule } from "./problems/problems.module";
 import { User } from "./users/user.model";
-import { UsersModule } from "./users/users.module";
+import { UserModule } from "./users/user.module";
 
 @Module({
     imports: [
@@ -48,7 +48,7 @@ import { UsersModule } from "./users/users.module";
             }),
         }),
         AuthModule,
-        UsersModule,
+        UserModule,
         ProblemsModule,
     ],
     controllers: [AppController],

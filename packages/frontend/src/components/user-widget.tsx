@@ -2,12 +2,15 @@
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@/components/forms/dropdown-menu";
 import { getApiUrl } from "@/lib/api";
+import { UserModel, UserSchema } from "@/types/user.model";
 import { ArrowRightIcon, SignOutIcon, UserIcon } from "@phosphor-icons/react";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
+import { Avatar } from "./avatar";
+
 export function UserWidget() {
-    const [user, setUser] = useState<{ avatar: string } | null>(null);
+    const [user, setUser] = useState<UserModel | null>(null);
 
     useEffect(() => {
         async function fetchDataAsync() {
@@ -15,7 +18,8 @@ export function UserWidget() {
             if (!res.ok) return;
 
             const json = await res.json();
-            setUser(json);
+            const parsedUser = UserSchema.parse(json);
+            setUser(parsedUser);
         }
         fetchDataAsync();
     }, []);
@@ -41,18 +45,17 @@ export function UserWidget() {
 
     return (
         <Menu>
-            <MenuButton>
+            <MenuButton tabIndex={-1}>
                 <div>
-                    {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-                    <img src={user.avatar} className="rounded-full w-8 h-8" />
+                    <Avatar user={user} size="medium" />
                 </div>
             </MenuButton>
-            <MenuItems anchor="top end">
-                <MenuItem>
-                    <Link className="flex flex-row items-center gap-2" href="/profile" prefetch={false}>
+            <MenuItems anchor="top end" className="relative z-10">
+                <Link className="flex flex-row items-center w-full gap-2" href={"/users/" + user.id} prefetch={false}>
+                    <MenuItem>
                         <UserIcon /> Profile
-                    </Link>
-                </MenuItem>
+                    </MenuItem>
+                </Link>
                 <MenuItem className="text-red-500" onClick={logout}>
                     <SignOutIcon /> Logout
                 </MenuItem>

@@ -51,6 +51,7 @@ export default function RootLayout({
                                 src="/solvely-icon.png"
                                 width={40}
                                 height={40}
+                                priority
                                 alt="Solvely Logo"
                                 draggable={false}
                             />
@@ -62,7 +63,7 @@ export default function RootLayout({
                     <footer className="flex flex-row justify-between items-center h-12 text-md font-mono text-neutral-400 select-none">
                         <p>Copyright &copy; {new Date().getFullYear()} solvely</p>
                         <p>
-                            <Link href="https://github.com/yiliansource/solvely">
+                            <Link href="https://github.com/yiliansource/solvely" target="_blank">
                                 <GithubLogoIcon size={24} />
                             </Link>
                         </p>
