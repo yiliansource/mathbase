@@ -63,3 +63,64 @@ export function UserWidget() {
         </Menu>
     );
 }
+
+export function UserWidgetActions({ onAction }: { onAction?: () => void }) {
+    const [user, setUser] = useState<UserModel | null>(null);
+
+    useEffect(() => {
+        async function fetchDataAsync() {
+            const res = await fetch(getApiUrl("/users/me"), { credentials: "include" });
+            if (!res.ok) return;
+
+            const json = await res.json();
+            const parsedUser = UserSchema.parse(json);
+            setUser(parsedUser);
+        }
+        fetchDataAsync();
+    }, []);
+
+    const logout = useCallback(() => {
+        onAction?.();
+        async function logoutAsync() {
+            await fetch(getApiUrl("/auth/logout"), { redirect: "manual", credentials: "include" });
+            setUser(null);
+        }
+        logoutAsync();
+    }, [onAction]);
+
+    if (!user) {
+        return (
+            <Link
+                href="/login"
+                className="flex flex-row items-center gap-1.5 text-sm font-semibold"
+                onClick={() => onAction?.()}
+            >
+                <span>Log in</span>
+                <span>
+                    <ArrowRightIcon />
+                </span>
+            </Link>
+        );
+    }
+
+    return (
+        <div className="flex flex-col">
+            <div className="mr-0 ml-auto mb-5">
+                <Avatar user={user} size="medium" />
+            </div>
+            <div className="flex flex-col gap-3">
+                <Link
+                    className="flex flex-row items-center gap-3"
+                    href={"/users/" + user.id}
+                    prefetch={false}
+                    onClick={() => onAction?.()}
+                >
+                    Profile <UserIcon />
+                </Link>
+                <div className="flex flex-row items-center gap-3 text-red-500" onClick={logout}>
+                    Logout <SignOutIcon />
+                </div>
+            </div>
+        </div>
+    );
+}

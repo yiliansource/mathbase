@@ -6,10 +6,10 @@ export default function Home() {
     return (
         <div className="my-auto">
             <h2 className="mb-6 text-2xl text-blue-500 font-(family-name:--font-kurale)">solvely</h2>
-            <h1 className="mb-8 text-7xl font-semibold tracking-tighter max-w-xl">
+            <h1 className="mb-8 text-5xl lg:text-7xl font-semibold tracking-tighter max-w-xl">
                 Improvement, one problem at a time
             </h1>
-            <p className="mb-12 text-xl text-neutral-800 max-w-2xl">
+            <p className="mb-12 text-lg lg:text-xl text-neutral-800 max-w-2xl">
                 Explore our archive of math exercises, share interesting problems and track your progress on your
                 learning journey.
             </p>

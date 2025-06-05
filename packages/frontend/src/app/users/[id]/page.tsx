@@ -35,7 +35,7 @@ export default function UserPage() {
 
     return (
         <div className="mt-4">
-            <div className="flex flex-row gap-5 items-center">
+            <div className="flex flex-col lg:flex-row gap-5 items-start lg:items-center">
                 <div>
                     {user ? (
                         <Avatar user={user} size="profile" />
@@ -43,7 +43,7 @@ export default function UserPage() {
                         <Skeleton className="block mb-10" circle height="100%" width="100%" />
                     )}
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-1 lg:gap-0">
                     <div className="mb-1">
                         {user ? (
                             <div className="flex flex-row gap-3">
@@ -59,7 +59,7 @@ export default function UserPage() {
                             <Skeleton className="mb-1" height={24} width={140} />
                         )} */}
                     </div>
-                    <div className="mb-2 flex flex-row gap-4 text-sm text-neutral-600">
+                    <div className="mb-2 flex flex-col lg:flex-row gap-1 lg:gap-4 text-sm text-neutral-600">
                         <span className="flex flex-row gap-2 items-center">
                             <CakeIcon />
                             {user ? (
@@ -78,7 +78,7 @@ export default function UserPage() {
                         </span>
                     </div>
                 </div>
-                <div className="ml-auto mr-0 mt-0 mb-auto">
+                <div className="hidden lg:block ml-auto mr-0 mt-0 mb-auto">
                     {user && (
                         <Button variant="secondary" size="small" as={Link} href={`/users/${user.id}/edit`}>
                             <PencilIcon /> Edit Profile

@@ -1,4 +1,5 @@
-import { Navigation } from "@/components/navigation";
+import { MobileSidebar } from "@/components/mobile-sidebar";
+import { DesktopNavigation } from "@/components/navigation";
 import { UserWidget } from "@/components/user-widget";
 import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import clsx from "clsx";
@@ -56,15 +57,22 @@ export default function RootLayout({
                                 draggable={false}
                             />
                         </Link>
-                        <Navigation />
-                        <UserWidget />
+                        <div className="hidden lg:block">
+                            <DesktopNavigation />
+                        </div>
+                        <div className="hidden lg:block">
+                            <UserWidget />
+                        </div>
+                        <div className="block lg:hidden">
+                            <MobileSidebar />
+                        </div>
                     </header>
                     <main className="flex flex-col w-full mx-auto max-w-5xl grow">{children}</main>
-                    <footer className="flex flex-row justify-between items-center h-12 text-md font-mono text-neutral-400 select-none">
+                    <footer className="flex flex-row justify-between items-center h-12 text-sm lg:text-md font-mono text-neutral-400 select-none">
                         <p>Copyright &copy; {new Date().getFullYear()} solvely</p>
                         <p>
                             <Link href="https://github.com/yiliansource/solvely" target="_blank">
-                                <GithubLogoIcon size={24} />
+                                <GithubLogoIcon className="text-xl" />
                             </Link>
                         </p>
                     </footer>

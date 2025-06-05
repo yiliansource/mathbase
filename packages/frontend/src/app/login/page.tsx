@@ -1,6 +1,6 @@
 export default function LoginPage() {
     return (
-        <div className="flex flex-col items-center m-auto">
+        <div className="flex flex-col items-center m-auto text-center">
             <p className="mb-8 text-4xl font-bold tracking-tight">Sign in to your account</p>
             <div className="flex flex-col">
                 <a
