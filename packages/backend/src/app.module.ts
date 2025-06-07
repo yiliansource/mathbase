@@ -8,8 +8,9 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
+import { LlmModule } from "./llms/llm.module";
 import { Problem } from "./problems/problem.model";
-import { ProblemsModule } from "./problems/problems.module";
+import { ProblemModule } from "./problems/problem.module";
 import { User } from "./users/user.model";
 import { UserModule } from "./users/user.module";
 
@@ -48,8 +49,9 @@ import { UserModule } from "./users/user.module";
             }),
         }),
         AuthModule,
+        ProblemModule,
         UserModule,
-        ProblemsModule,
+        LlmModule,
     ],
     controllers: [AppController],
     providers: [
@@ -61,3 +63,4 @@ import { UserModule } from "./users/user.module";
     ],
 })
 export class AppModule {}
+
