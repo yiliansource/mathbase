@@ -1,40 +1,35 @@
 "use client";
 
+import { Menu, MenuButton, MenuItem, MenuItems } from "@/components/forms/dropdown-menu";
 import { getApiUrl } from "@/lib/api";
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { UserModel, UserSchema } from "@/types/user.model";
 import { ArrowRightIcon, SignOutIcon, UserIcon } from "@phosphor-icons/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-const dropdownItems: {
-    label: string;
-    icon: React.ReactNode;
-    href: string;
-}[] = [
-    {
-        label: "Profile",
-        icon: <UserIcon />,
-        href: "/profile",
-    },
-    {
-        label: "Logout",
-        icon: <SignOutIcon />,
-        href: getApiUrl("/auth/logout"),
-    },
-];
+import { Avatar } from "./avatar";
 
 export function UserWidget() {
-    const [user, setUser] = useState<{ avatar: string } | null>(null);
+    const [user, setUser] = useState<UserModel | null>(null);
 
     useEffect(() => {
-        async function fetchData() {
+        async function fetchDataAsync() {
             const res = await fetch(getApiUrl("/users/me"), { credentials: "include" });
             if (!res.ok) return;
 
             const json = await res.json();
-            setUser(json);
+            const parsedUser = UserSchema.parse(json);
+            setUser(parsedUser);
         }
-        fetchData();
+        fetchDataAsync();
+    }, []);
+
+    const logout = useCallback(() => {
+        async function logoutAsync() {
+            await fetch(getApiUrl("/auth/logout"), { redirect: "manual", credentials: "include" });
+            setUser(null);
+        }
+        logoutAsync();
     }, []);
 
     if (!user) {
@@ -50,29 +45,82 @@ export function UserWidget() {
 
     return (
         <Menu>
-            <MenuButton>
+            <MenuButton tabIndex={-1}>
                 <div>
-                    {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-                    <img src={user.avatar} className="rounded-full w-8 h-8" />
+                    <Avatar user={user} size="medium" />
                 </div>
             </MenuButton>
-            <MenuItems
-                anchor="top end"
-                className="w-52 origin-top-right rounded-lg border border-neutral-300 p-1 text-sm/6 transition duration-100 ease-out [--anchor-gap:--spacing(1)] focus:outline-none data-closed:scale-95 data-closed:opacity-0"
-            >
-                {dropdownItems.map((item) => (
-                    <MenuItem key={item.label}>
-                        <Link
-                            className="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 hover:bg-neutral-100"
-                            href={item.href}
-                            prefetch={false}
-                        >
-                            {item.icon}
-                            {item.label}
-                        </Link>
+            <MenuItems anchor="top end" className="relative z-10">
+                <Link className="flex flex-row items-center w-full gap-2" href={"/users/" + user.id} prefetch={false}>
+                    <MenuItem>
+                        <UserIcon /> Profile
                     </MenuItem>
-                ))}
+                </Link>
+                <MenuItem className="text-red-500" onClick={logout}>
+                    <SignOutIcon /> Logout
+                </MenuItem>
             </MenuItems>
         </Menu>
+    );
+}
+
+export function UserWidgetActions({ onAction }: { onAction?: () => void }) {
+    const [user, setUser] = useState<UserModel | null>(null);
+
+    useEffect(() => {
+        async function fetchDataAsync() {
+            const res = await fetch(getApiUrl("/users/me"), { credentials: "include" });
+            if (!res.ok) return;
+
+            const json = await res.json();
+            const parsedUser = UserSchema.parse(json);
+            setUser(parsedUser);
+        }
+        fetchDataAsync();
+    }, []);
+
+    const logout = useCallback(() => {
+        onAction?.();
+        async function logoutAsync() {
+            await fetch(getApiUrl("/auth/logout"), { redirect: "manual", credentials: "include" });
+            setUser(null);
+        }
+        logoutAsync();
+    }, [onAction]);
+
+    if (!user) {
+        return (
+            <Link
+                href="/login"
+                className="flex flex-row items-center gap-1.5 text-sm font-semibold"
+                onClick={() => onAction?.()}
+            >
+                <span>Log in</span>
+                <span>
+                    <ArrowRightIcon />
+                </span>
+            </Link>
+        );
+    }
+
+    return (
+        <div className="flex flex-col">
+            <div className="mr-0 ml-auto mb-5">
+                <Avatar user={user} size="medium" />
+            </div>
+            <div className="flex flex-col gap-3">
+                <Link
+                    className="flex flex-row items-center gap-3"
+                    href={"/users/" + user.id}
+                    prefetch={false}
+                    onClick={() => onAction?.()}
+                >
+                    Profile <UserIcon />
+                </Link>
+                <div className="flex flex-row items-center gap-3 text-red-500" onClick={logout}>
+                    Logout <SignOutIcon />
+                </div>
+            </div>
+        </div>
     );
 }

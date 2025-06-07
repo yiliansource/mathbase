@@ -1,0 +1,63 @@
+name: Deploy backend
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - ".github/workflows/deploy-backend.yml"
+            - "packages/backend/**"
+            - "package.json"
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - run: corepack enable
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "yarn"
+
+            - name: Install dependencies
+              run: yarn install --immutable
+
+            - name: Build backend
+              run: yarn backend:build
+
+            - name: Tar build files
+              run: |
+                  tar -czf backend.tar.gz package.json yarn.lock packages/backend/dist packages/backend/package.json
+
+            - name: Copy to server
+              uses: appleboy/scp-action@v1
+              with:
+                  host: ${{ secrets.DROPLET_HOST }}
+                  username: ${{ secrets.DROPLET_USER }}
+                  key: ${{ secrets.DROPLET_KEY }}
+                  source: backend.tar.gz
+                  target: /tmp
+                  overwrite: true
+
+            - name: Extract and restart backend process
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.DROPLET_HOST }}
+                  username: ${{ secrets.DROPLET_USER }}
+                  key: ${{ secrets.DROPLET_KEY }}
+                  script: |
+                      pm2 stop backend
+
+                      mkdir -p /var/www/solvely
+                      tar -xzf /tmp/backend.tar.gz -C /var/www/solvely
+                      rm /tmp/backend.tar.gz
+
+                      cd /var/www/solvely
+                      yarn install --immutable
+
+                      pm2 start backend

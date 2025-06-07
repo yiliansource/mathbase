@@ -1,5 +1,5 @@
 {
-    "name": "mathbase",
+    "name": "solvely",
     "scripts": {
         "dev": "conc --names frontend,backend \"yarn frontend:dev\" \"yarn backend:dev\"",
         "frontend:dev": "yarn workspace frontend dev",
@@ -7,6 +7,9 @@
         "build": "yarn frontend:build && yarn backend:build",
         "frontend:build": "yarn workspace frontend build",
         "backend:build": "yarn workspace backend build",
+        "start": "conc --names frontend,backend \"yarn frontend:start\" \"yarn backend:start\"",
+        "frontend:start": "yarn workspace frontend start",
+        "backend:start": "yarn workspace backend start",
         "format": "prettier --write ."
     },
     "workspaces": [

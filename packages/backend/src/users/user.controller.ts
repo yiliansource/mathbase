@@ -3,11 +3,11 @@ import { Public } from "src/auth/guards/jwt-auth.guard";
 
 import { CurrentUser } from "./user.decorator";
 import { User } from "./user.model";
-import { UsersService } from "./users.service";
+import { UserService } from "./user.service";
 
 @Controller("users")
-export class UsersController {
-    constructor(private usersService: UsersService) {}
+export class UserController {
+    constructor(private usersService: UserService) {}
 
     @Get("me")
     findMe(@CurrentUser() user: User) {

@@ -12,7 +12,7 @@ import { LlmModule } from "./llms/llm.module";
 import { Problem } from "./problems/problem.model";
 import { ProblemModule } from "./problems/problem.module";
 import { User } from "./users/user.model";
-import { UsersModule } from "./users/users.module";
+import { UserModule } from "./users/user.module";
 
 @Module({
     imports: [
@@ -21,7 +21,7 @@ import { UsersModule } from "./users/users.module";
             validationSchema: Joi.object({
                 FRONTEND_URL: Joi.string().default("http://localhost:3000"),
 
-                DATABASE_NAME: Joi.string().default("mathbase"),
+                DATABASE_NAME: Joi.string().default("solvely"),
                 DATABASE_USER: Joi.string().default("root"),
                 DATABASE_PASSWORD: Joi.string().default("root"),
 
@@ -49,8 +49,8 @@ import { UsersModule } from "./users/users.module";
             }),
         }),
         AuthModule,
-        UsersModule,
         ProblemModule,
+        UserModule,
         LlmModule,
     ],
     controllers: [AppController],

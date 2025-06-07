@@ -1,0 +1,73 @@
+name: Deploy frontend
+
+on:
+    push:
+        branches:
+            - main
+        paths:
+            - ".github/workflows/deploy-frontend.yml"
+            - "packages/frontend/**"
+            - "package.json"
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - run: corepack enable
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: "yarn"
+
+            - uses: actions/cache@v4
+              with:
+                  path: ${{ github.workspace }}/packages/frontend/.next/cache
+                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('packages/frontend/**/*.ts', 'packages/frontend/**/*.tsx') }}
+                  restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
+
+            - name: Install dependencies
+              run: yarn install --immutable
+
+            - name: Create environment variables
+              run: |
+                  echo "NEXT_PUBLIC_API_BASE=${{ vars.API_BASE }}" > packages/frontend/.env
+
+            - name: Build frontend
+              run: yarn frontend:build
+
+            - name: Tar build files
+              run: |
+                  tar -czf frontend.tar.gz package.json yarn.lock packages/frontend/.next packages/frontend/public packages/frontend/package.json
+
+            - name: Copy to server
+              uses: appleboy/scp-action@v1
+              with:
+                  host: ${{ secrets.DROPLET_HOST }}
+                  username: ${{ secrets.DROPLET_USER }}
+                  key: ${{ secrets.DROPLET_KEY }}
+                  source: frontend.tar.gz
+                  target: /tmp
+                  overwrite: true
+
+            - name: Extract and restart frontend process
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.DROPLET_HOST }}
+                  username: ${{ secrets.DROPLET_USER }}
+                  key: ${{ secrets.DROPLET_KEY }}
+                  script: |
+                      pm2 stop frontend
+
+                      mkdir -p /var/www/solvely
+                      tar -xzf /tmp/frontend.tar.gz -C /var/www/solvely
+                      rm /tmp/frontend.tar.gz
+
+                      cd /var/www/solvely
+                      yarn install --immutable
+
+                      pm2 start frontend

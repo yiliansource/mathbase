@@ -4588,6 +4588,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"class-variance-authority@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "class-variance-authority@npm:0.7.1"
+  dependencies:
+    clsx: "npm:^2.1.1"
+  checksum: 10c0/0f438cea22131808b99272de0fa933c2532d5659773bfec0c583de7b3f038378996d3350683426b8e9c74a6286699382106d71fbec52f0dd5fbb191792cccb5b
+  languageName: node
+  linkType: hard
+
 "cli-cursor@npm:^3.1.0":
   version: 3.1.0
   resolution: "cli-cursor@npm:3.1.0"
@@ -6269,6 +6278,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^12.16.0":
+  version: 12.16.0
+  resolution: "framer-motion@npm:12.16.0"
+  dependencies:
+    motion-dom: "npm:^12.16.0"
+    motion-utils: "npm:^12.12.1"
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/df8d61553d0aebb2f679620a9c70e90e82b4245fbbd3333d779399b555e6344eb72c453c2483071a9b2c6fd1f8ba680e211b494468d69c9c060a344e0d6d8893
+  languageName: node
+  linkType: hard
+
 "fresh@npm:^2.0.0":
   version: 2.0.0
   resolution: "fresh@npm:2.0.0"
@@ -6287,14 +6318,19 @@ __metadata:
     "@types/node": "npm:^20"
     "@types/react": "npm:^19"
     "@types/react-dom": "npm:^19"
+    class-variance-authority: "npm:^0.7.1"
     clsx: "npm:^2.1.1"
     eslint: "npm:^9"
     eslint-config-next: "npm:15.3.2"
+    motion: "npm:^12.16.0"
     next: "npm:15.3.2"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    react-loading-skeleton: "npm:^3.5.0"
     tailwindcss: "npm:^4"
+    timeago.js: "npm:4.0.0-beta.3"
     typescript: "npm:^5"
+    zod: "npm:^3.25.49"
   languageName: unknown
   linkType: soft
 
@@ -8385,16 +8421,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mathbase@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "mathbase@workspace:."
-  dependencies:
-    "@trivago/prettier-plugin-sort-imports": "npm:^5.2.2"
-    concurrently: "npm:^9.1.2"
-    prettier: "npm:^3.5.3"
-  languageName: unknown
-  linkType: soft
-
 "media-typer@npm:0.3.0":
   version: 0.3.0
   resolution: "media-typer@npm:0.3.0"
@@ -8654,6 +8680,43 @@ __metadata:
   bin:
     mkdirp: dist/cjs/src/bin.js
   checksum: 10c0/9f2b975e9246351f5e3a40dcfac99fcd0baa31fbfab615fe059fb11e51f10e4803c63de1f384c54d656e4db31d000e4767e9ef076a22e12a641357602e31d57d
+  languageName: node
+  linkType: hard
+
+"motion-dom@npm:^12.16.0":
+  version: 12.16.0
+  resolution: "motion-dom@npm:12.16.0"
+  dependencies:
+    motion-utils: "npm:^12.12.1"
+  checksum: 10c0/b5d770c5fc2ff163fe160e5152b647c67eefa5ee3ccb1ea59819056893913f20e98af6223615c374f6c835a1796ca77181ee4d0e7464bb8a79a79c00fa0a2b72
+  languageName: node
+  linkType: hard
+
+"motion-utils@npm:^12.12.1":
+  version: 12.12.1
+  resolution: "motion-utils@npm:12.12.1"
+  checksum: 10c0/880a174769d1be42b46cfb34af81b4a629c068d30d5cf7e07d249fbf2f5121d577482d3ea5bdc1db549c0288733e1e987efecb195fae350995270651559c6697
+  languageName: node
+  linkType: hard
+
+"motion@npm:^12.16.0":
+  version: 12.16.0
+  resolution: "motion@npm:12.16.0"
+  dependencies:
+    framer-motion: "npm:^12.16.0"
+    tslib: "npm:^2.4.0"
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 10c0/b78d26f847e8f527b6e211e3362324ffc4c02e44ab6cc7c04e5c4b0dd97baf069fd50b603b13735268c1786a4055655d841568f09322bfbcc5006a64e0058ef5
   languageName: node
   linkType: hard
 
@@ -9552,6 +9615,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-loading-skeleton@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "react-loading-skeleton@npm:3.5.0"
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 10c0/a081f561c9700fead6ba98b91e3fe77a36a680e3fd69dbf4eecbaa5fabcb7173049c6d6fb7487355331a770bed432356edaa147702f3d46ddf0d6caa623e779f
+  languageName: node
+  linkType: hard
+
 "react@npm:^19.0.0":
   version: 19.1.0
   resolution: "react@npm:19.1.0"
@@ -10242,6 +10314,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"solvely@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "solvely@workspace:."
+  dependencies:
+    "@trivago/prettier-plugin-sort-imports": "npm:^5.2.2"
+    concurrently: "npm:^9.1.2"
+    prettier: "npm:^3.5.3"
+  languageName: unknown
+  linkType: soft
+
 "sort-keys-length@npm:^1.0.0":
   version: 1.0.1
   resolution: "sort-keys-length@npm:1.0.1"
@@ -10786,6 +10868,13 @@ __metadata:
   version: 2.3.8
   resolution: "through@npm:2.3.8"
   checksum: 10c0/4b09f3774099de0d4df26d95c5821a62faee32c7e96fb1f4ebd54a2d7c11c57fe88b0a0d49cf375de5fee5ae6bf4eb56dbbf29d07366864e2ee805349970d3cc
+  languageName: node
+  linkType: hard
+
+"timeago.js@npm:4.0.0-beta.3":
+  version: 4.0.0-beta.3
+  resolution: "timeago.js@npm:4.0.0-beta.3"
+  checksum: 10c0/73f5a860c0e58908cb6847c069c8cef86576663612f33f939797dc0e4d88ea8602532044093362dcbd24044927e7492eaad18189337216cf4f6bb3b08a5af203
   languageName: node
   linkType: hard
 
@@ -11746,5 +11835,12 @@ __metadata:
   version: 2.1.2
   resolution: "yoctocolors-cjs@npm:2.1.2"
   checksum: 10c0/a0e36eb88fea2c7981eab22d1ba45e15d8d268626e6c4143305e2c1628fa17ebfaa40cd306161a8ce04c0a60ee0262058eab12567493d5eb1409780853454c6f
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.25.49":
+  version: 3.25.49
+  resolution: "zod@npm:3.25.49"
+  checksum: 10c0/2b70269b18abcd9b8d282ed6361a327a71d9a91433d3add02c4ab69750a271d97675145b393ccc968b5d61360d8d4000180fbc8a347dc186320b9e118c7a1df9
   languageName: node
   linkType: hard
