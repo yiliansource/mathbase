@@ -35,8 +35,10 @@ export default function NewProblemPage() {
                 const error = await res.json();
                 setFormError(error.message);
             }
-        } catch (error: any) {
-            setFormError(error.message);
+        } catch (error) {
+            if (error instanceof Error) {
+                setFormError(error.message);
+            }
         }
     };
 
@@ -67,8 +69,10 @@ export default function NewProblemPage() {
                 const error = await res.json();
                 setFormError(error.message);
             }
-        } catch (error: any) {
-            setFormError(error.message);
+        } catch (error) {
+            if (error instanceof Error) {
+                setFormError(error.message);
+            }
         }
     };
 
